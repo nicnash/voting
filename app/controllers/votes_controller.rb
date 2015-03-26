@@ -1,6 +1,6 @@
 class VotesController < ApplicationController
   before_action :set_vote, only: [:show, :edit, :update, :destroy]
-
+ skip_before_action :verify_authenticity_token
 
   def vote
     byebug
@@ -17,16 +17,39 @@ class VotesController < ApplicationController
   def show
   end
 
-  # GET /votes/new
+
+
+  # GET /votes/new/value
   def new
-      
-    @vote = Vote.new(user_id: current_user.id, idea_id: params[:id])
+    # @vote = Vote.new(user_id: current_user.id, idea_id: params[:id])
+    
+    puts "hellooooo"
+    voteValue = params[:value];
+    @voteExists = Vote.exists?(user_id: current_user.id, idea_id: params[:id])
+    if @voteExists
+      puts "YEA BABY IT EXISTS"  
+      puts voteValue
+      # if voteValue == "0"
+      #   puts "EQUALS 0"
+        @vote = Vote.where(user_id: current_user.id, idea_id: params[:id])
+        # puts @vote
+        @vote.destroy_all 
+      # end
+      # puts "after"
 
+# @vote = Item.find(params[:id][:value])
+    else
+      # puts "WHATS WRONG WIT U BRO"
+      @vote = Vote.new(user_id: current_user.id, idea_id: params[:id])
+      @vote.save
 
-
-    @vote.save
+    end
+    
+    # @vote.save
     redirect_to ideas_url
   end
+
+  # def devote  vote = Vote.find_by(user_id: current_user.id, idea_id: params[:id])
 
   # GET /votes/1/edit
   def edit
@@ -39,10 +62,10 @@ class VotesController < ApplicationController
 
     respond_to do |format|
       if @vote.save
-        format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
+        # format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
         format.json { render :show, status: :created, location: @vote }
       else
-        format.html { render :new }
+        # format.html { render :new }
         format.json { render json: @vote.errors, status: :unprocessable_entity }
       end
     end
@@ -80,6 +103,6 @@ class VotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vote_params
-      params.require(:vote).permit(:user_id, :idea_id).merge(user_id: current_user.id)
+      params.permit(:user_id, :idea_id).merge(user_id: current_user.id)
     end
 end

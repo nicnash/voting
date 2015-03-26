@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   root to: redirect('/ideas')
 
 
-  get 'votes/new/:id', to: 'votes#new', as: 'votes_new'
+  get 'votes/new/:id/:value', to: 'votes#new', as: 'votes_new'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

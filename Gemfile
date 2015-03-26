@@ -8,6 +8,7 @@ gem 'sqlite3'
 gem 'carrierwave'
 gem 'devise'
 gem 'gravtastic'
+gem 'slim'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
